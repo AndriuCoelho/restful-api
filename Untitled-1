@@ -1,0 +1,10 @@
+{
+  "name": "Marcos Nascimento",
+  "email": "marcao@bol.com",
+  "phone": "55 11 998990998",
+  "birthDay": "01/03/1980",
+  "weight": 95,
+  "height": 1.69,
+  "sex": "male",
+  "rich": true
+}
