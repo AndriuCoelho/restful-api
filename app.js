@@ -2,9 +2,9 @@ const PORT = 8080
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const express = require('express')
-const moment = require('moment')
 const bodyParser = require('body-parser')
 const app = express()
+const myLogger = require('./middlewares/my-logger.js')
 
 // Mongoose Connect
 mongoose.connect('mongodb://localhost/local', { useMongoClient: true,})
@@ -22,21 +22,29 @@ const customerSchema = new Schema({
   createAt: { type: Date, default: Date.now }
 })
 
-// Customer Model (Interface)
+const productSchema = new Schema({
+  name: String,
+  vendor: String,
+  quantity: Number,
+  price: Number,
+  weight: Number,
+  purchaseData: Date,
+  manufactureData: Date,
+  createAt: { type: Date, default: Date.now }
+})
+
+// Customer Model
 
 const costumerModel = mongoose.model('costumers', customerSchema)
 console.log(costumerModel)
 
+// Product Model
+
+const productModel = mongoose.model('products', productSchema)
 
 
-// Middlewares
-// Custom Logger
 
-const myLogger = function(req, res, next) {
-  console.log(`${moment().format('lll')} ==> ${req.method} ${req.url}`)
-  next()
-}
-
+// Register Middlewares
 app.use(myLogger)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
@@ -104,8 +112,45 @@ app.delete('/costumers/:id', (req, res) => {
   // res.status(204).end()
 })
 
+// Products Routes
 
-// GET /costumers
+app.get('/products', (req, res) => {
+  productModel.find(function(err, products) {
+    res.status(200).send(products)
+  })
+})
+
+app.get('/products/:id', (req, res) => {
+  productModel.findById(req.params.id, function(err, product) {
+    if (err) res.sendStatus(404)
+    res.status(200).send(product)
+  })
+})
+
+app.post('/products', (req, res) => {
+  productModel.create(req.body, function(err, product) {
+    if (err) res.sendStatus(412)
+    res.status(201).send(product)
+  })
+})
+
+app.put('/products/:id', (req, res) => {
+  productModel.findByIdAndUpdate(req.params.id, req.body, function(err) {
+    if (err) res.sendStatus(404)
+    res.sendStatus(204)
+  })
+})
+
+app.delete('/products/:id', (req, res) => {
+  productModel.findByIdAndRemove(req.params.id, req.body, function(err) {
+    if (err) res.sendStatus(404)
+    res.sendStatus(204)
+  })
+})
+ 
+
+
+
 app.listen(8080, () => {
   // console.log('Servidor rodando na porta ' + PORT + '...')
 

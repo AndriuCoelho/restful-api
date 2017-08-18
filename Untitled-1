@@ -1,10 +1,9 @@
 {
-  "name": "Marcos Nascimento",
-  "email": "marcao@bol.com",
-  "phone": "55 11 998990998",
-  "birthDay": "01/03/1980",
-  "weight": 95,
-  "height": 1.69,
-  "sex": "male",
-  "rich": true
+  "name": "Cafe",
+  "vendor": "Pilão",
+  "quantity": "300",
+  "price": 9.90,
+  "weight": 500,
+  "purchaseData": "10/01/2000",
+  "manufactureData": "01/01/2000"
 }
