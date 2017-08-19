@@ -33,7 +33,6 @@ const productSchema = new Schema({
 
 const costumerModel = mongoose.model('costumers', customerSchema)
 
-
 // App Config
 const fs = require('fs')
 const env = require('node-env-file')
@@ -117,44 +116,11 @@ app.delete('/costumers/:id', (req, res) => {
   // res.status(204).end()
 })
 
-// Products Routes
-
-app.get('/products', (req, res) => {
-  productModel.find(function(err, products) {
-    res.status(200).send(products)
-  })
-})
-
-app.get('/products/:id', (req, res) => {
-  productModel.findById(req.params.id, function(err, product) {
-    if (err) res.sendStatus(404)
-    res.status(200).send(product)
-  })
-})
-
-app.post('/products', (req, res) => {
-  productModel.create(req.body, function(err, product) {
-    if (err) res.sendStatus(412)
-    res.status(201).send(product)
-  })
-})
-
-app.put('/products/:id', (req, res) => {
-  productModel.findByIdAndUpdate(req.params.id, req.body, function(err) {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
-
-app.delete('/products/:id', (req, res) => {
-  productModel.findByIdAndRemove(req.params.id, req.body, function(err) {
-    if (err) res.sendStatus(404)
-    res.sendStatus(204)
-  })
-})
- 
 
 
+
+// Importing Routes
+require('./routes/costumers')(app, productModel)
 
 app.listen(app.get('PORT'), () => {
   // console.log('Servidor rodando na porta ' + PORT + '...')
